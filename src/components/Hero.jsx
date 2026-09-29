@@ -1,3 +1,10 @@
+const HIGHLIGHTS = [
+  { value: '↓ 86%', label: 'VLM 호출량 감소', project: 'DeepGU' },
+  { value: '96~98%', label: 'LLM 판정 근거 정합률 (기존 46.3%)', project: 'FinGuard AI' },
+  { value: '~20×', label: 'API 응답 개선 (3,030 → 150ms)', project: 'GeoMemo' },
+  { value: '↓ 21%', label: 'PK 인덱스 크기 (100만 행)', project: 'KnowledgeLink' },
+]
+
 export default function Hero() {
   return (
     <section className="hero" id="home">
@@ -5,48 +12,63 @@ export default function Hero() {
       <div className="hero__blob hero__blob--1" aria-hidden="true" />
       <div className="hero__blob hero__blob--2" aria-hidden="true" />
 
-      <div className="hero__content">
-        <p className="hero__name">장효석 · Hyoseok Jang</p>
-        <p className="hero__role">Backend Engineer</p>
+      <div className="container hero__inner">
+        <div className="hero__content">
+          <p className="hero__eyebrow">
+            <span className="hero__eyebrow-dot" aria-hidden="true" />
+            장효석 · Backend Engineer
+          </p>
 
-        <h1 className="hero__tagline">
-          문제를 정의하고,
-          <br />
-          <span className="gradient-text">구조로 해결합니다</span>
-        </h1>
+          <h1 className="hero__tagline">
+            문제를 정의하고,
+            <br />
+            <span className="gradient-text">구조로 해결합니다</span>
+          </h1>
 
-        <p className="hero__desc">
-          스트리밍 인프라부터 LLM 파이프라인, 데이터베이스까지
-          <br />
-          병목과 오류를 직접 측정하고, 구조를 바꿔 수치로 증명합니다.
-        </p>
+          <p className="hero__desc">
+            스트리밍 인프라부터 LLM 파이프라인, 데이터베이스까지{' '}
+            <br />
+            병목과 오류를 직접 측정하고, 구조를 바꿔 수치로 증명합니다.
+          </p>
 
-        <div className="hero__info">
-          <span>Dongguk University · CS&amp;E</span>
-          <span className="hero__dot">·</span>
-          <span>2021 입학</span>
-          <span className="hero__dot">·</span>
-          <span>GPA 4.03 / 4.5</span>
+          <div className="hero__actions">
+            <a href="#projects" className="btn btn--primary">
+              프로젝트 보기 ↓
+            </a>
+            <a
+              href="https://github.com/calmkeep22"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn--ghost"
+            >
+              <GithubIcon />
+              GitHub
+            </a>
+          </div>
+
+          <div className="hero__info">
+            <span>Dongguk University · CS&amp;E</span>
+            <span className="hero__dot">·</span>
+            <span>2021 입학</span>
+            <span className="hero__dot">·</span>
+            <span>GPA 4.03 / 4.5</span>
+          </div>
         </div>
 
-        <div className="hero__actions">
-          <a
-            href="https://github.com/calmkeep22"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn--primary"
-          >
-            <GithubIcon />
-            GitHub
-          </a>
-          <a href="#projects" className="btn btn--ghost">
-            프로젝트 보기 ↓
-          </a>
-        </div>
-      </div>
-
-      <div className="hero__scroll" aria-hidden="true">
-        <span className="hero__scroll-line" />
+        <aside className="hero__highlights" aria-label="대표 성과">
+          <p className="hero__highlights-label">Measured Results</p>
+          <ul className="hero__highlights-list">
+            {HIGHLIGHTS.map((h) => (
+              <li className="hero__highlight" key={h.project}>
+                <span className="hero__highlight-value">{h.value}</span>
+                <span className="hero__highlight-text">
+                  <span className="hero__highlight-label">{h.label}</span>
+                  <span className="hero__highlight-project">{h.project}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </aside>
       </div>
     </section>
   )

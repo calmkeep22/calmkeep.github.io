@@ -19,6 +19,8 @@ export default function Navbar() {
   return (
     <nav className={`navbar${scrolled ? ' scrolled' : ''}`}>
       <div className="container navbar__inner">
+        <a href="#home" className="navbar__logo">장효석</a>
+
         <ul className={`navbar__links${open ? ' open' : ''}`}>
           {links.map(({ href, label }) => (
             <li key={href}>
