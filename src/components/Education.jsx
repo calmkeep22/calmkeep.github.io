@@ -47,7 +47,7 @@ export default function Education() {
               </div>
               <div className="edu-meta-item">
                 <span className="edu-meta-item__label">관심</span>
-                <span className="edu-meta-item__value">Backend · Infra · AI 연동</span>
+                <span className="edu-meta-item__value">Backend · Infra · AI 파이프라인</span>
               </div>
             </div>
           </div>

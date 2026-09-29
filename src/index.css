@@ -421,6 +421,7 @@ img { max-width: 100%; display: block; }
 }
 
 .project-card {
+  position: relative;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--bg-card);
@@ -525,6 +526,7 @@ img { max-width: 100%; display: block; }
   line-height: 1.75;
   margin-bottom: 44px;
   max-width: 780px;
+  word-break: keep-all;
 }
 
 /* Problems */
@@ -595,6 +597,7 @@ img { max-width: 100%; display: block; }
   font-size: 0.85rem;
   color: var(--text-secondary);
   line-height: 1.65;
+  word-break: keep-all;
 }
 
 /* Metrics */
@@ -641,6 +644,7 @@ img { max-width: 100%; display: block; }
   color: var(--text-secondary);
   font-weight: 500;
   line-height: 1.4;
+  word-break: keep-all;
 }
 
 /* Tech tags */
@@ -665,6 +669,107 @@ img { max-width: 100%; display: block; }
 .tech-tag:hover {
   border-color: var(--border-hover);
   color: var(--accent);
+}
+
+/* Other projects */
+.other-projects__header {
+  margin: 80px 0 24px;
+}
+
+.other-projects {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.other-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  padding: 32px 28px;
+  transition: border-color 0.3s ease;
+}
+
+.other-card:hover {
+  border-color: rgba(129, 140, 248, 0.25);
+}
+
+.other-card__meta {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.other-card__title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.other-card__subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.other-card__desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-bottom: 20px;
+  word-break: keep-all;
+}
+
+.other-card__highlight {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  background: rgba(99, 102, 241, 0.06);
+  border: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+
+.other-card__highlight-value {
+  font-size: 1.15rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.other-card__highlight-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.other-card__tech {
+  margin-bottom: 24px;
+}
+
+.other-card__github {
+  margin-top: auto;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.other-card__github:hover {
+  color: var(--text);
 }
 
 /* ==================== TECH STACK ==================== */
@@ -1005,6 +1110,10 @@ img { max-width: 100%; display: block; }
   .education__grid {
     grid-template-columns: 1fr;
   }
+
+  .other-projects {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 640px) {
@@ -1020,9 +1129,28 @@ img { max-width: 100%; display: block; }
     flex-direction: column;
   }
 
-  .metrics--3col,
   .metrics--4col {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .metrics--3col {
+    gap: 8px;
+  }
+
+  .metrics--3col .metric-card {
+    padding: 16px 6px;
+  }
+
+  .project-card__github {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+
+  .other-projects__header {
+    margin-top: 56px;
   }
 
   .navbar__links {

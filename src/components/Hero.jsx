@@ -7,7 +7,7 @@ export default function Hero() {
 
       <div className="hero__content">
         <p className="hero__name">장효석 · Hyoseok Jang</p>
-        <p className="hero__role">Backend &amp; Infra Engineer</p>
+        <p className="hero__role">Backend Engineer</p>
 
         <h1 className="hero__tagline">
           문제를 정의하고,
@@ -16,9 +16,9 @@ export default function Hero() {
         </h1>
 
         <p className="hero__desc">
-          스트리밍·AI·비동기 인프라에서 마주친 병목을 직접 측정하고,
+          스트리밍 인프라부터 LLM 파이프라인, 데이터베이스까지
           <br />
-          파이프라인과 메시지 큐 구조로 비용과 지연을 정량적으로 줄였습니다.
+          병목과 오류를 직접 측정하고, 구조를 바꿔 수치로 증명합니다.
         </p>
 
         <div className="hero__info">

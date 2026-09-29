@@ -19,7 +19,7 @@ const CATEGORIES = [
   {
     icon: '📡',
     name: 'Streaming',
-    pills: ['MediaMTX', 'WebRTC', 'SSE', 'HLS'],
+    pills: ['MediaMTX', 'WebRTC', 'SSE', 'HLS', 'OBS'],
   },
   {
     icon: '☁️',
@@ -27,24 +27,24 @@ const CATEGORIES = [
     pills: ['AWS Bedrock', 'Amazon MQ', 'CloudFront', 'ALB', 'AWS RDS', 'EC2'],
   },
   {
-    icon: '📨',
-    name: 'Message Queue',
-    pills: ['RabbitMQ'],
-  },
-  {
     icon: '🗄️',
-    name: 'Database',
-    pills: ['MySQL', 'PostgreSQL', 'SQLite', 'Redis'],
+    name: 'Database / MQ',
+    pills: ['MySQL', 'PostgreSQL', 'SQLite', 'Redis', 'RabbitMQ'],
   },
   {
     icon: '🔧',
     name: 'DevOps',
-    pills: ['Docker', 'Docker Compose', 'OBS'],
+    pills: ['Docker', 'Docker Compose', 'GitHub Actions'],
   },
   {
     icon: '📈',
-    name: 'Observability / Test',
-    pills: ['OpenTelemetry', 'Grafana', 'Testcontainers'],
+    name: 'Observability',
+    pills: ['OpenTelemetry', 'Grafana'],
+  },
+  {
+    icon: '🧪',
+    name: 'Testing',
+    pills: ['JUnit', 'Testcontainers', 'pytest'],
   },
 ]
 

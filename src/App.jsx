@@ -16,7 +16,7 @@ export default function App() {
       </main>
       <footer className="footer">
         <div className="container footer__inner">
-          <span>© 2025 장효석. Dongguk University · CS&amp;E</span>
+          <span>© 2026 장효석. Dongguk University · CS&amp;E</span>
           <a href="https://github.com/calmkeep22" target="_blank" rel="noopener noreferrer">
             github.com/calmkeep22
           </a>
