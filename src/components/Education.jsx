@@ -1,82 +1,57 @@
-import { useInView } from '../hooks/useInView'
-
 const AWARDS = [
   {
-    year: '2026 · 1학기',
+    year: '2026년 1학기',
     title: 'SMART토너먼트 장려상',
     org: '동국대학교 사물인터넷 혁신융합대학사업단',
   },
   {
-    year: '2025 · 2학기',
+    year: '2025년 2학기',
     title: 'SMART토너먼트 우수상',
     org: '동국대학교 사물인터넷 혁신융합대학사업단',
   },
 ]
 
 export default function Education() {
-  const { ref: ref1, visible: v1 } = useInView()
-  const { ref: ref2, visible: v2 } = useInView()
-
   return (
-    <section className="section education" id="education">
+    <section className="section education" id="education" aria-labelledby="education-title">
       <div className="container">
-        <RevealBlock className="section__header">
-          <p className="section__label">Education &amp; Awards</p>
-          <h2 className="section__title">교육 및 수상</h2>
-        </RevealBlock>
+        <h2 className="section__title" id="education-title">교육 및 수상</h2>
 
         <div className="education__grid">
-          <div
-            ref={ref1}
-            className={`edu-card reveal${v1 ? ' visible' : ''}`}
-          >
-            <div className="edu-card__icon" aria-hidden="true">🎓</div>
-            <p className="edu-card__label">Education</p>
-            <h3 className="edu-card__school">동국대학교</h3>
-            <p className="edu-card__dept">컴퓨터공학부 · Computer Science &amp; Engineering</p>
-            <div className="edu-card__meta">
-              <div className="edu-meta-item">
-                <span className="edu-meta-item__label">입학</span>
-                <span className="edu-meta-item__value">2021년</span>
+          <section className="edu" aria-labelledby="edu-education">
+            <h3 className="edu__heading" id="edu-education">학력</h3>
+            <p className="edu__school">동국대학교</p>
+            <p className="edu__dept">컴퓨터공학부, Computer Science &amp; Engineering</p>
+            <dl className="edu__meta">
+              <div>
+                <dt>입학</dt>
+                <dd>2021년</dd>
               </div>
-              <div className="edu-meta-item">
-                <span className="edu-meta-item__label">학점</span>
-                <span className="edu-meta-item__value">
-                  <strong>4.03</strong> / 4.5
-                </span>
+              <div>
+                <dt>학점</dt>
+                <dd><strong>4.03</strong> / 4.5</dd>
               </div>
-              <div className="edu-meta-item">
-                <span className="edu-meta-item__label">관심</span>
-                <span className="edu-meta-item__value">Backend · Infra · AI 파이프라인</span>
+              <div>
+                <dt>관심</dt>
+                <dd>Backend, Infra, AI 파이프라인</dd>
               </div>
-            </div>
-          </div>
+            </dl>
+          </section>
 
-          <div
-            ref={ref2}
-            className={`awards-card reveal reveal-delay-2${v2 ? ' visible' : ''}`}
-          >
-            <div className="awards-card__icon" aria-hidden="true">🏆</div>
-            <p className="awards-card__label">Awards</p>
-            {AWARDS.map((award) => (
-              <div className="award-item" key={award.title}>
-                <p className="award-item__year">{award.year}</p>
-                <p className="award-item__title">{award.title}</p>
-                <p className="award-item__org">{award.org}</p>
-              </div>
-            ))}
-          </div>
+          <section className="edu" aria-labelledby="edu-awards">
+            <h3 className="edu__heading" id="edu-awards">수상</h3>
+            <ol className="awards">
+              {AWARDS.map((award) => (
+                <li className="award" key={award.title}>
+                  <p className="award__year">{award.year}</p>
+                  <p className="award__title">{award.title}</p>
+                  <p className="award__org">{award.org}</p>
+                </li>
+              ))}
+            </ol>
+          </section>
         </div>
       </div>
     </section>
-  )
-}
-
-function RevealBlock({ children, className }) {
-  const { ref, visible } = useInView()
-  return (
-    <div ref={ref} className={`reveal${visible ? ' visible' : ''}${className ? ` ${className}` : ''}`}>
-      {children}
-    </div>
   )
 }
