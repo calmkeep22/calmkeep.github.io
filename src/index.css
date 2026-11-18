@@ -121,7 +121,8 @@ main:focus { outline: none; }
   outline-color: #fff;
 }
 
-@media (min-width: 1024px) {
+/* 18px base only on large screens that are also tall enough; laptops at 125 to 150 percent display scaling stay at 17px */
+@media (min-width: 1600px) and (min-height: 820px) {
   html { font-size: 112.5%; }
 }
 
@@ -308,7 +309,7 @@ main:focus { outline: none; }
 .hero {
   position: relative;
   isolation: isolate;
-  padding: calc(var(--nav-h) + clamp(32px, 6vh, 80px)) 0 clamp(104px, 14vh, 136px);
+  padding: calc(var(--nav-h) + clamp(20px, 5vh, 72px)) 0 clamp(96px, 13vh, 128px);
 }
 
 /* Hand-drawn night sky behind the hero */
@@ -404,11 +405,12 @@ main:focus { outline: none; }
 }
 
 .hero__tagline {
-  font-size: clamp(2.5rem, 5.2vw, 4.6rem);
+  /* sized by width and by height so short laptop screens keep the hero on one screen */
+  font-size: clamp(2.2rem, min(5.2vw, 9vh), 4.6rem);
   font-weight: 800;
   letter-spacing: -0.035em;
   line-height: 1.12;
-  margin-bottom: 28px;
+  margin-bottom: clamp(18px, 3vh, 28px);
 }
 
 .hero__desc {
@@ -416,7 +418,7 @@ main:focus { outline: none; }
   font-size: clamp(1.05rem, 1.4vw, 1.2rem);
   color: var(--text-2);
   line-height: 1.75;
-  margin-bottom: 40px;
+  margin-bottom: clamp(24px, 4.5vh, 40px);
 }
 
 .hero__desc strong {
@@ -432,7 +434,7 @@ main:focus { outline: none; }
 
 /* Profile card */
 .profile {
-  padding: 28px;
+  padding: clamp(20px, 3.2vh, 28px);
   border: 1px solid var(--line);
   border-radius: 16px;
   background: var(--surface);
@@ -443,15 +445,15 @@ main:focus { outline: none; }
   display: flex;
   align-items: center;
   gap: 18px;
-  padding-bottom: 24px;
-  margin-bottom: 20px;
+  padding-bottom: clamp(14px, 2.6vh, 24px);
+  margin-bottom: clamp(12px, 2vh, 20px);
   border-bottom: 1px solid var(--line);
 }
 
 .profile__photo {
   flex: none;
-  width: 84px;
-  height: 84px;
+  width: clamp(64px, 10vh, 84px);
+  height: clamp(64px, 10vh, 84px);
   border-radius: 50%;
   object-fit: cover;
   border: 1px solid var(--line-strong);
@@ -490,7 +492,7 @@ main:focus { outline: none; }
   transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease;
 }
 
-.profile__focus a { padding: 10px 4px; }
+.profile__focus a { padding: clamp(6px, 1.1vh, 10px) 4px; }
 
 .profile__text {
   display: flex;
