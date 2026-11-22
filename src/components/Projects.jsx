@@ -8,31 +8,33 @@ const FEATURED = [
     subtitle: 'VLM 기반 실시간 CCTV 이상행동 분석 플랫폼',
     meta: ['팀 프로젝트, 캡스톤 디자인', '백엔드, 인프라'],
     flow: [
-      { label: 'CCTV 영상', note: 'OBS, MediaMTX' },
-      { label: 'Fast Model', note: '이상행동 후보 선별' },
-      { label: 'Event Builder', note: '이벤트 묶기' },
-      { label: 'Keyframe Selection', note: '핵심 프레임만' },
-      { label: 'VLM 분석', note: '호출량 86% 감소', main: true },
-      { label: 'SSE 알림', note: '50ms 이내 전달' },
+      { label: 'CCTV 영상', note: 'OBS 송출' },
+      { label: 'MediaMTX, FastAPI', note: '영상 허브와 이벤트 서버' },
+      {
+        parallel: [
+          { label: 'WebRTC 송출', note: '영상 지연 약 125ms', main: true },
+          { label: 'SSE 알림', note: '50ms 이내 전달' },
+        ],
+      },
+      { label: '관제 화면', note: '영상과 알림 실시간 수신' },
     ],
-    desc: 'OBS 영상 송출부터 AI 추론, 실시간 알림까지 스트리밍과 백엔드 인프라 전 구간을 설계하고 구축했다.',
+    desc: 'OBS 영상 송출부터 실시간 알림까지 스트리밍과 백엔드 인프라를 설계하고 구축했다. VLM 이상행동 분석은 AI 팀원이 맡았고, 나는 영상과 이벤트가 지연 없이 흐르는 구조를 담당했다.',
     problems: [
       {
-        title: '높은 VLM 연산 비용',
-        text: '전 프레임에 주기적으로 VLM을 돌려, CCTV가 늘수록 비용과 처리량이 급격히 커지는 구조였다. Fast Model로 이상행동 후보를 고르고 Event Builder로 이벤트를 묶은 뒤, Keyframe Selection으로 핵심 프레임만 VLM에 보내는 3단계 필터링을 설계했다.',
+        title: '수 초씩 늦는 영상',
+        text: 'HLS 기반 스트리밍은 수 초 이상 지연돼 이상행동에 바로 대응하기 어려웠다. MediaMTX를 스트리밍 허브로 두고 WebRTC 저지연 송출로 바꿔 영상 지연을 약 125ms로 낮췄다.',
       },
       {
-        title: '수 초씩 늦는 영상과 알림',
-        text: 'HLS 스트리밍은 수 초 이상 지연돼 이상행동에 바로 대응하기 어려웠다. MediaMTX를 스트리밍 허브로 두고 WebRTC로 송출을 바꿨고, 이벤트 알림은 asyncio.Queue 기반 SSE로 실시간 전달했다.',
+        title: '실시간 이상행동 알림',
+        text: '분석 결과로 나온 이상행동 이벤트를 관제 화면에 바로 보여 줘야 했다. asyncio.Queue 기반 SSE broadcaster를 만들어 연결된 클라이언트에 이벤트를 실시간으로 전달했고, 알림 지연을 50ms 이내로 유지했다.',
       },
     ],
     metrics: [
-      { value: '86%', label: 'VLM 호출량 감소' },
-      { value: '~125ms', label: '영상 지연, WebRTC' },
+      { value: '~125ms', label: '영상 지연, 기존 HLS는 수 초' },
       { value: '≤ 50ms', label: '이벤트 알림 지연, SSE' },
     ],
     github: 'https://github.com/calmkeep22/2026-1-CECD2-1-Deepgu-06',
-    tech: ['Python', 'FastAPI', 'MediaMTX', 'WebRTC', 'SSE', 'AWS Bedrock'],
+    tech: ['Python', 'FastAPI', 'MediaMTX', 'WebRTC', 'SSE', 'asyncio'],
   },
   {
     id: 'geomemo',

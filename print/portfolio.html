@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>장효석 | 백엔드 엔지니어 포트폴리오</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<style>
+  /* Print portfolio: white A4, ink-only. Regenerate with print/build-pdf.sh after editing. */
+  @page { size: A4; margin: 0; }
+
+  :root {
+    --ink: #131a2a;
+    --ink-2: #444c5c;
+    --ink-3: #6b7280;
+    --line: #e3e5ea;
+    --line-strong: #c9cdd5;
+    --tint: #f5f6f8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: 'Pretendard Variable', Pretendard, 'Malgun Gothic', sans-serif;
+    color: var(--ink);
+    background: #fff;
+    font-size: 9.6pt;
+    line-height: 1.6;
+    word-break: keep-all;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  ul, ol { list-style: none; }
+
+  .page {
+    position: relative;
+    width: 210mm;
+    height: 297mm;
+    padding: 18mm 18mm 20mm;
+    overflow: hidden;
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .page:last-child { page-break-after: auto; break-after: auto; }
+
+  .page__foot {
+    position: absolute;
+    left: 18mm;
+    right: 18mm;
+    bottom: 10mm;
+    display: flex;
+    justify-content: space-between;
+    font-size: 7.5pt;
+    color: var(--ink-3);
+    border-top: 0.5pt solid var(--line);
+    padding-top: 3mm;
+  }
+
+  h2.section {
+    font-size: 11pt;
+    font-weight: 700;
+    padding-bottom: 2mm;
+    margin: 0 0 3.5mm;
+    border-bottom: 1pt solid var(--ink);
+  }
+
+  .block + .block { margin-top: 7mm; }
+
+  /* ---------- page 1: profile ---------- */
+  .profile {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10mm;
+    padding-bottom: 7mm;
+    margin-bottom: 7mm;
+    border-bottom: 0.5pt solid var(--line-strong);
+  }
+
+  .profile__name { font-size: 24pt; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; }
+  .profile__role { font-size: 11pt; color: var(--ink-2); margin-bottom: 4mm; }
+  .profile__intro { font-size: 11pt; font-weight: 600; margin-bottom: 5mm; }
+
+  .links { display: grid; grid-template-columns: 17mm 1fr; row-gap: 1mm; font-size: 9pt; }
+  .links dt { color: var(--ink-3); }
+  .links a { text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 2pt; }
+
+  .profile__photo {
+    width: 30mm;
+    height: 30mm;
+    border-radius: 3mm;
+    object-fit: cover;
+    border: 0.5pt solid var(--line);
+    flex: none;
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; vertical-align: top; padding: 2mm 0; border-bottom: 0.5pt solid var(--line); }
+  th { font-weight: 600; color: var(--ink-3); font-size: 8.5pt; }
+  td.strong { font-weight: 600; }
+  td.muted { color: var(--ink-2); }
+  .col-area { width: 42mm; }
+  .col-level { width: 20mm; }
+
+  .stack { display: grid; grid-template-columns: 22mm 1fr; }
+  .stack dt, .stack dd { padding: 1.6mm 0; border-bottom: 0.5pt solid var(--line); }
+  .stack dt { font-weight: 600; }
+  .stack dd { color: var(--ink-2); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; }
+
+  .edu__school { font-size: 10.5pt; font-weight: 700; }
+  .edu__dept { color: var(--ink-2); margin-bottom: 2mm; }
+  .facts { display: grid; grid-template-columns: 12mm 1fr; row-gap: 0.8mm; }
+  .facts dt { color: var(--ink-3); }
+
+  .award + .award { margin-top: 2.5mm; }
+
+  .summary li { display: flex; align-items: baseline; gap: 4mm; padding: 2mm 0; border-bottom: 0.5pt solid var(--line); }
+  .summary__name { flex: none; width: 38mm; font-weight: 600; }
+  .summary__desc { flex: 1; color: var(--ink-2); }
+  .summary__page { flex: none; color: var(--ink-3); font-size: 8.5pt; }
+  .award__when { color: var(--ink-3); font-size: 8.5pt; }
+  .award__title { font-weight: 600; }
+  .award__org { color: var(--ink-2); font-size: 8.5pt; }
+
+
+  /* ---------- project pages ---------- */
+  .case__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 8mm;
+    padding-bottom: 4mm;
+    margin-bottom: 5mm;
+    border-bottom: 1pt solid var(--ink);
+  }
+
+  .case__kicker { font-size: 8.5pt; color: var(--ink-3); }
+  .case__title { font-size: 20pt; font-weight: 800; letter-spacing: -0.02em; line-height: 1.25; }
+  .case__subtitle { font-size: 10.5pt; color: var(--ink-2); }
+  .case__repo { font-size: 8pt; color: var(--ink-3); text-align: right; max-width: 70mm; overflow-wrap: anywhere; }
+  .case__repo a { text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 2pt; }
+
+  .meta { display: grid; grid-template-columns: 12mm 1fr; row-gap: 0.8mm; margin-bottom: 4mm; font-size: 9pt; }
+  .meta dt { color: var(--ink-3); }
+
+  .desc { font-size: 10.5pt; margin-bottom: 7mm; }
+
+  .label { font-size: 8.5pt; font-weight: 700; color: var(--ink-3); margin-bottom: 2.5mm; }
+
+  /* processing flow: plain boxes and arrows */
+  .flow { display: flex; align-items: center; margin-bottom: 9mm; }
+  .flow__step { flex: 1 1 0; min-width: 0; }
+  .flow__arrow { flex: none; width: 5mm; text-align: center; color: var(--ink-3); font-size: 9pt; }
+  .node {
+    border: 0.6pt solid var(--line-strong);
+    border-radius: 1.5mm;
+    padding: 1.6mm 2mm;
+    background: #fff;
+  }
+  .node b { display: block; font-size: 8.4pt; line-height: 1.3; overflow-wrap: anywhere; }
+  .node span { display: block; font-size: 7.2pt; color: var(--ink-3); line-height: 1.3; }
+  .node--main { border: 1.2pt solid var(--ink); background: var(--tint); }
+  .node--main span { color: var(--ink); font-weight: 600; }
+  .parallel { display: flex; flex-direction: column; gap: 1.2mm; }
+  .parallel .node { padding: 1mm 2mm; }
+
+  .problem + .problem { margin-top: 7mm; }
+  .problem__title { font-size: 11.5pt; font-weight: 700; margin-bottom: 1.5mm; }
+  .problem__text { color: var(--ink-2); font-size: 10.3pt; line-height: 1.75; }
+  .problem__link { font-size: 8.5pt; margin-top: 1mm; color: var(--ink-3); }
+  .problem__link a { text-decoration: underline; text-underline-offset: 2pt; }
+
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 9mm 0 7mm;
+    border: 0.6pt solid var(--line-strong);
+    border-radius: 2mm;
+  }
+  .metrics--2 { grid-template-columns: repeat(2, 1fr); }
+  .metric { padding: 3.5mm 4mm; }
+  .metric + .metric { border-left: 0.6pt solid var(--line-strong); }
+  .metric__value { font-size: 18pt; font-weight: 800; letter-spacing: -0.01em; line-height: 1.2; font-variant-numeric: tabular-nums; }
+  .metric__label { font-size: 8.8pt; color: var(--ink-2); }
+
+  .tech { font-size: 9.6pt; color: var(--ink-2); }
+  .tech b { color: var(--ink); font-weight: 600; margin-right: 2mm; }
+
+  /* additional projects */
+  .more + .more { margin-top: 9mm; padding-top: 7mm; border-top: 0.5pt solid var(--line-strong); }
+  .more__title { font-size: 14pt; font-weight: 800; letter-spacing: -0.01em; }
+</style>
+</head>
+<body>
+
+<!-- ======================= 1. 프로필 ======================= -->
+<section class="page">
+  <header class="profile">
+    <div>
+      <h1 class="profile__name">장효석</h1>
+      <p class="profile__role">Backend Engineer</p>
+      <p class="profile__intro">당연한 것을 다시 질문하고, 더 나은 방법을 찾는 백엔드 엔지니어입니다.</p>
+      <dl class="links">
+        <dt>포트폴리오</dt><dd><a href="https://calmkeep22.github.io/calmkeep.github.io/">calmkeep22.github.io/calmkeep.github.io</a></dd>
+        <dt>GitHub</dt><dd><a href="https://github.com/calmkeep22">github.com/calmkeep22</a></dd>
+        <dt>Velog</dt><dd><a href="https://velog.io/@keepcalm22/posts">velog.io/@keepcalm22</a></dd>
+      </dl>
+    </div>
+    <img class="profile__photo" src="../public/profile.jpg" alt="장효석 프로필 사진" />
+  </header>
+
+  <div class="block">
+    <h2 class="section">프로젝트</h2>
+    <ol class="summary">
+      <li><span class="summary__name">DeepGU</span><span class="summary__desc">HLS를 WebRTC로 바꿔 영상 지연을 약 125ms로 줄인 실시간 CCTV 분석 플랫폼</span><span class="summary__page">2쪽</span></li>
+      <li><span class="summary__name">GeoMemo</span><span class="summary__desc">LLM 분석을 RabbitMQ로 분리해 기록 API를 150ms로 줄인 감정 기록 서비스</span><span class="summary__page">3쪽</span></li>
+      <li><span class="summary__name">RAG Code Reviewer</span><span class="summary__desc">BM25와 Dense 하이브리드 검색으로 MRR 0.82를 낸 코드 리뷰 시스템</span><span class="summary__page">4쪽</span></li>
+      <li><span class="summary__name">OpenStock Access</span><span class="summary__desc">시각장애인을 위한 접근성 주식 모의투자 앱, 커밋 약 90% 담당</span><span class="summary__page">5쪽</span></li>
+      <li><span class="summary__name">MaeumNaru</span><span class="summary__desc">KoBERT 서버를 분리한 Spring Boot 마음 건강 플랫폼</span><span class="summary__page">5쪽</span></li>
+    </ol>
+  </div>
+
+  <div class="block">
+    <h2 class="section">기술 스택</h2>
+    <dl class="stack">
+      <dt>Backend</dt><dd>Python, Java, FastAPI, Spring Boot</dd>
+      <dt>Data</dt><dd>MySQL, PostgreSQL, Redis, RabbitMQ</dd>
+      <dt>AI</dt><dd>RAG, LangChain, Chroma, Whisper</dd>
+      <dt>Streaming</dt><dd>WebRTC, SSE, MediaMTX</dd>
+      <dt>Infra</dt><dd>AWS, Docker, GitHub Actions</dd>
+      <dt>Testing</dt><dd>pytest, JUnit, Testcontainers</dd>
+    </dl>
+  </div>
+
+  <div class="block two-col">
+    <div>
+      <h2 class="section">학력</h2>
+      <p class="edu__school">동국대학교</p>
+      <p class="edu__dept">컴퓨터공학부, Computer Science &amp; Engineering</p>
+      <dl class="facts">
+        <dt>입학</dt><dd>2021년</dd>
+        <dt>학점</dt><dd><b>4.03</b> / 4.5</dd>
+        <dt>관심</dt><dd>Backend, Infra, AI 파이프라인</dd>
+      </dl>
+    </div>
+    <div>
+      <h2 class="section">수상</h2>
+      <div class="award">
+        <p class="award__when">2026년 1학기</p>
+        <p class="award__title">SMART토너먼트 장려상</p>
+        <p class="award__org">동국대학교 사물인터넷 혁신융합대학사업단</p>
+      </div>
+      <div class="award">
+        <p class="award__when">2025년 2학기</p>
+        <p class="award__title">SMART토너먼트 우수상</p>
+        <p class="award__org">동국대학교 사물인터넷 혁신융합대학사업단</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="page__foot"><span>장효석 | 백엔드 엔지니어 포트폴리오</span><span>1 / 5</span></footer>
+</section>
+
+<!-- ======================= 2. DeepGU ======================= -->
+<section class="page">
+  <header class="case__head">
+    <div>
+      <p class="case__kicker">대표 프로젝트 1</p>
+      <h2 class="case__title">DeepGU</h2>
+      <p class="case__subtitle">VLM 기반 실시간 CCTV 이상행동 분석 플랫폼</p>
+    </div>
+    <p class="case__repo"><a href="https://github.com/calmkeep22/2026-1-CECD2-1-Deepgu-06">github.com/calmkeep22/2026-1-CECD2-1-Deepgu-06</a></p>
+  </header>
+
+  <dl class="meta">
+    <dt>형태</dt><dd>팀 프로젝트, 캡스톤 디자인</dd>
+    <dt>역할</dt><dd>백엔드, 인프라</dd>
+  </dl>
+
+  <p class="desc">OBS 영상 송출부터 실시간 알림까지 스트리밍과 백엔드 인프라를 설계하고 구축했다. VLM 이상행동 분석은 AI 팀원이 맡았고, 나는 영상과 이벤트가 지연 없이 흐르는 구조를 담당했다.</p>
+
+  <p class="label">처리 흐름</p>
+  <div class="flow">
+    <div class="flow__step"><div class="node"><b>CCTV 영상</b><span>OBS 송출</span></div></div>
+    <span class="flow__arrow">→</span>
+    <div class="flow__step"><div class="node"><b>MediaMTX, FastAPI</b><span>영상 허브와 이벤트 서버</span></div></div>
+    <span class="flow__arrow">→</span>
+    <div class="flow__step"><div class="parallel">
+      <div class="node node--main"><b>WebRTC 송출</b><span>영상 지연 약 125ms</span></div>
+      <div class="node"><b>SSE 알림</b><span>50ms 이내 전달</span></div>
+    </div></div>
+    <span class="flow__arrow">→</span>
+    <div class="flow__step"><div class="node"><b>관제 화면</b><span>영상과 알림 실시간 수신</span></div></div>
+  </div>
+
+  <p class="label">문제와 해결</p>
+  <div class="problem">
+    <h3 class="problem__title">수 초씩 늦는 영상</h3>
+    <p class="problem__text">HLS 기반 스트리밍은 수 초 이상 지연돼 이상행동에 바로 대응하기 어려웠다. MediaMTX를 스트리밍 허브로 두고 WebRTC 저지연 송출로 바꿔 영상 지연을 약 125ms로 낮췄다.</p>
+  </div>
+  <div class="problem">
+    <h3 class="problem__title">실시간 이상행동 알림</h3>
+    <p class="problem__text">분석 결과로 나온 이상행동 이벤트를 관제 화면에 바로 보여 줘야 했다. asyncio.Queue 기반 SSE broadcaster를 만들어 연결된 클라이언트에 이벤트를 실시간으로 전달했고, 알림 지연을 50ms 이내로 유지했다.</p>
+  </div>
+
+  <div class="metrics metrics--2">
+    <div class="metric"><p class="metric__value">~125ms</p><p class="metric__label">영상 지연, 기존 HLS는 수 초</p></div>
+    <div class="metric"><p class="metric__value">≤ 50ms</p><p class="metric__label">이벤트 알림 지연, SSE</p></div>
+  </div>
+
+  <p class="tech"><b>기술</b>Python, FastAPI, MediaMTX, WebRTC, SSE, asyncio</p>
+
+  <footer class="page__foot"><span>장효석 | 백엔드 엔지니어 포트폴리오</span><span>2 / 5</span></footer>
+</section>
+
+<!-- ======================= 3. GeoMemo ======================= -->
+<section class="page">
+  <header class="case__head">
+    <div>
+      <p class="case__kicker">대표 프로젝트 2</p>
+      <h2 class="case__title">GeoMemo</h2>
+      <p class="case__subtitle">위치 기반 감정 기록과 맞춤 장소 추천 플랫폼</p>
+    </div>
+    <p class="case__repo"><a href="https://github.com/2025-OSS-Project">github.com/2025-OSS-Project</a></p>
+  </header>
+
+  <dl class="meta">
+    <dt>형태</dt><dd>팀 프로젝트, 2025 OSS</dd>
+    <dt>역할</dt><dd>백엔드, AI 파이프라인, 인프라</dd>
+  </dl>
+
+  <p class="desc">위치와 함께 기록한 감정을 분석해 주간 인사이트와 맞춤 장소를 추천하는 서비스다.</p>
+
+  <p class="label">처리 흐름</p>
+  <div class="flow">
+    <div class="flow__step"><div class="node node--main"><b>기록 API</b><span>저장 후 즉시 응답</span></div></div>
+    <span class="flow__arrow">→</span>
+    <div class="flow__step"><div class="node"><b>RabbitMQ</b><span>영속화, TTL, 수동 ACK</span></div></div>
+    <span class="flow__arrow">→</span>
+    <div class="flow__step"><div class="parallel">
+      <div class="node"><b>emotion.req</b></div>
+      <div class="node"><b>insight.req</b></div>
+      <div class="node"><b>reco.req/res</b></div>
+    </div></div>
+    <span class="flow__arrow">→</span>
+    <div class="flow__step"><div class="node"><b>AI 워커</b><span>분석과 추천</span></div></div>
+    <span class="flow__arrow">→</span>
+    <div class="flow__step"><div class="node"><b>Redis</b><span>추천 결과 5분 캐시</span></div></div>
+  </div>
+
+  <p class="label">문제와 해결</p>
+  <div class="problem">
+    <h3 class="problem__title">분석을 기다리던 기록 API</h3>
+    <p class="problem__text">약 3초가 걸리는 LLM 감정 분석이 기록 API를 막고 있었다. 기록 저장과 분석을 분리하고 분석 요청은 RabbitMQ로 넘겨, 메모를 저장하는 즉시 응답하도록 바꿨다.</p>
+  </div>
+  <div class="problem">
+    <h3 class="problem__title">서로 얽힌 AI 작업</h3>
+    <p class="problem__text">감정 분석, 주간 인사이트, 장소 추천을 각각 별도 큐로 나눴다. 메시지 영속화, TTL, 수동 ACK를 적용하고, 추천 결과는 Redis에 5분간 캐시해 correlation ID로 추적했다.</p>
+    <p class="problem__link">구현 코드: <a href="https://github.com/2025-OSS-Project/GeoMemo-Backend/blob/dev/core/mq.py">github.com/2025-OSS-Project/GeoMemo-Backend/blob/dev/core/mq.py</a></p>
+  </div>
+
+  <div class="metrics">
+    <div class="metric"><p class="metric__value">150ms</p><p class="metric__label">기록 API 응답시간, 기존 3,030ms</p></div>
+    <div class="metric"><p class="metric__value">약 95%</p><p class="metric__label">응답시간 감소</p></div>
+    <div class="metric"><p class="metric__value">3종</p><p class="metric__label">분리한 AI 워크플로</p></div>
+  </div>
+
+  <p class="tech"><b>기술</b>FastAPI, RabbitMQ, Redis, MySQL, AWS</p>
+
+  <footer class="page__foot"><span>장효석 | 백엔드 엔지니어 포트폴리오</span><span>3 / 5</span></footer>
+</section>
+
+<!-- ======================= 4. RAG Code Reviewer ======================= -->
+<section class="page">
+  <header class="case__head">
+    <div>
+      <p class="case__kicker">대표 프로젝트 3</p>
+      <h2 class="case__title">RAG Code Reviewer</h2>
+      <p class="case__subtitle">코드베이스와 공식문서를 함께 검색하는 근거 기반 코드 리뷰 시스템</p>
+    </div>
+    <p class="case__repo"><a href="https://github.com/calmkeep22/langchain">github.com/calmkeep22/langchain</a></p>
+  </header>
+
+  <dl class="meta">
+    <dt>형태</dt><dd>개인 프로젝트</dd>
+    <dt>역할</dt><dd>RAG 설계, 백엔드, 검색 품질 평가</dd>
+  </dl>
+
+  <p class="desc">프로젝트 코드와 프레임워크 공식문서를 함께 검색해 리뷰하고, 답변마다 코드 위치와 문서 출처를 붙여 결과를 직접 검증할 수 있게 했다.</p>
+
+  <p class="label">처리 흐름</p>
+  <div class="flow">
+    <div class="flow__step"><div class="node"><b>리뷰 질문</b></div></div>
+    <span class="flow__arrow">→</span>
+    <div class="flow__step"><div class="parallel">
+      <div class="node"><b>Dense 검색</b><span>의미 검색</span></div>
+      <div class="node"><b>BM25 검색</b><span>SQLite FTS5</span></div>
+    </div></div>
+    <span class="flow__arrow">→</span>
+    <div class="flow__step"><div class="node node--main"><b>RRF 병합</b><span>파일당 후보 제한</span></div></div>
+    <span class="flow__arrow">→</span>
+    <div class="flow__step"><div class="node"><b>근거 기반 리뷰</b><span>코드 위치와 문서 출처</span></div></div>
+  </div>
+
+  <p class="label">문제와 해결</p>
+  <div class="problem">
+    <h3 class="problem__title">의미 검색이 놓치는 코드 식별자</h3>
+    <p class="problem__text">Dense 검색만으로는 함수명이나 클래스명처럼 정확한 문자열이 중요한 질문을 놓쳤다. 코드를 AST 기반 함수 단위로 나누고 Dense와 BM25 검색 결과를 RRF로 합쳤으며, 파일당 후보 수를 제한해 한 파일이 결과를 독점하지 않게 했다.</p>
+  </div>
+  <div class="problem">
+    <h3 class="problem__title">품질을 떨어뜨린 reranker</h3>
+    <p class="problem__text">FlashRank reranker를 붙이자 한국어 질문 35개 평가셋에서 MRR이 0.82에서 0.29~0.41로 떨어졌다. 측정 결과를 근거로 reranker를 기본 경로에서 빼고 하이브리드 검색을 최종 구조로 택했다.</p>
+    <p class="problem__link">평가 결과: <a href="https://github.com/calmkeep22/langchain/tree/master/eval">github.com/calmkeep22/langchain/tree/master/eval</a></p>
+  </div>
+
+  <div class="metrics">
+    <div class="metric"><p class="metric__value">0.82</p><p class="metric__label">Hybrid 검색 MRR</p></div>
+    <div class="metric"><p class="metric__value">35개</p><p class="metric__label">평가 질문</p></div>
+    <div class="metric"><p class="metric__value">0.29~0.41</p><p class="metric__label">Reranker 적용 후 MRR</p></div>
+  </div>
+
+  <p class="tech"><b>기술</b>FastAPI, LangChain, Chroma, SQLite FTS5, BM25, Mistral</p>
+
+  <footer class="page__foot"><span>장효석 | 백엔드 엔지니어 포트폴리오</span><span>4 / 5</span></footer>
+</section>
+
+<!-- ======================= 5. 추가 프로젝트 ======================= -->
+<section class="page">
+  <h2 class="section">추가 프로젝트</h2>
+
+  <article class="more">
+    <header class="case__head" style="border-bottom:0; margin-bottom:2mm; padding-bottom:0">
+      <div>
+        <h3 class="more__title">OpenStock Access</h3>
+        <p class="case__subtitle">시각장애인과 저시력 사용자를 위한 접근성 주식 모의투자 앱</p>
+      </div>
+      <p class="case__repo"><a href="https://github.com/calmkeep22/2026-OSS-PROJECT">github.com/calmkeep22/2026-OSS-PROJECT</a></p>
+    </header>
+    <dl class="meta">
+      <dt>형태</dt><dd>오픈소스 팀 프로젝트, 2026 OSS</dd>
+      <dt>역할</dt><dd>접근성, 아키텍처, AI 연동</dd>
+    </dl>
+    <p class="desc" style="margin-bottom:3mm">3인 팀에서 커밋의 약 90%를 맡았다. 문장마다 0.97초씩 걸리던 TTS 기동을 상주 프로세스로 바꿔 한 번으로 줄였고, CSS 전체의 대비를 자동 계산해 고대비 모드에서 깨지던 규칙 117개를 찾아 고쳤다.</p>
+    <p class="tech"><b>기술</b>Java 17, JavaFX, Python, Whisper, SQLite</p>
+  </article>
+
+  <article class="more">
+    <header class="case__head" style="border-bottom:0; margin-bottom:2mm; padding-bottom:0">
+      <div>
+        <h3 class="more__title">MaeumNaru</h3>
+        <p class="case__subtitle">감정 일기와 마음 건강 관리를 위한 웹 플랫폼</p>
+      </div>
+      <p class="case__repo"><a href="https://github.com/calmkeep22/2025-1-CSC4004-1-7-aco">github.com/calmkeep22/2025-1-CSC4004-1-7-aco</a></p>
+    </header>
+    <dl class="meta">
+      <dt>형태</dt><dd>팀 프로젝트</dd>
+      <dt>역할</dt><dd>백엔드, 인증, 스토리지, AI 연동</dd>
+    </dl>
+    <p class="desc" style="margin-bottom:3mm">KoBERT 감정 분류 서버를 Spring Boot 백엔드에서 분리해 REST로 연동했다. Refresh Token을 Redis에 두고 재발급과 로그아웃을 서버에서 통제했으며, 일기와 그림 파일은 S3에 저장하고 DB에는 경로만 남겼다.</p>
+    <p class="tech"><b>기술</b>Spring Boot, KoBERT, Redis, AWS S3, MySQL</p>
+  </article>
+
+  <footer class="page__foot"><span>장효석 | 백엔드 엔지니어 포트폴리오</span><span>5 / 5</span></footer>
+</section>
+
+</body>
+</html>
