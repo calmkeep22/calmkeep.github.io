@@ -182,6 +182,7 @@
     border-radius: 2mm;
   }
   .metrics--2 { grid-template-columns: repeat(2, 1fr); }
+  .problem + .tech { margin-top: 8mm; }
   .page--dense .flow { margin-bottom: 6mm; }
   .page--dense .desc { margin-bottom: 5mm; }
   .page--dense .problem + .problem { margin-top: 4.5mm; }
@@ -388,22 +389,61 @@
 
   <p class="desc">위치와 함께 기록한 감정을 분석해 주간 인사이트와 맞춤 장소를 추천하는 서비스다.</p>
 
-  <p class="label">처리 흐름</p>
-  <div class="flow">
-    <div class="flow__step"><div class="node node--main"><b>기록 API</b><span>저장 후 즉시 응답</span></div></div>
-    <span class="flow__arrow">→</span>
-    <div class="flow__step"><div class="node"><b>RabbitMQ</b><span>영속화, TTL, 수동 ACK</span></div></div>
-    <span class="flow__arrow">→</span>
-    <div class="flow__step"><div class="parallel">
-      <div class="node"><b>emotion.req</b></div>
-      <div class="node"><b>insight.req</b></div>
-      <div class="node"><b>reco.req/res</b></div>
-    </div></div>
-    <span class="flow__arrow">→</span>
-    <div class="flow__step"><div class="node"><b>AI 워커</b><span>분석과 추천</span></div></div>
-    <span class="flow__arrow">→</span>
-    <div class="flow__step"><div class="node"><b>Redis</b><span>추천 결과 5분 캐시</span></div></div>
-  </div>
+  <p class="label">시스템 구조</p>
+  <svg class="arch" viewBox="0 0 640 175" role="img" aria-label="GeoMemo 시스템 구조">
+    <defs>
+      <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0 10 5 0 10z" fill="#444c5c" />
+      </marker>
+    </defs>
+    <g class="arch__edges" marker-end="url(#arr2)">
+      <path d="M80 38H128" />
+      <path d="M270 30H348" />
+      <path d="M490 30H548" />
+      <path d="M548 50H492" />
+      <path d="M200 61V113" />
+      <path d="M350 50H272" />
+      <path d="M250 61L368 113" />
+    </g>
+    <g class="arch__edge-labels">
+      <text x="104" y="31" text-anchor="middle">요청</text>
+      <text x="309" y="23" text-anchor="middle">영속 메시지 발행</text>
+      <text x="519" y="23" text-anchor="middle">작업</text>
+      <text x="519" y="64" text-anchor="middle">reco.res</text>
+      <text x="311" y="64" text-anchor="middle">reco.res 소비</text>
+      <text x="194" y="92" text-anchor="end">메모, 인사이트 상태</text>
+      <text x="336" y="86">결과 캐시</text>
+    </g>
+    <g class="arch__box">
+      <rect x="0" y="15" width="80" height="46" rx="6" />
+      <text x="40" y="43" text-anchor="middle" class="t1">앱</text>
+    </g>
+    <g class="arch__box arch__box--mine">
+      <rect x="130" y="15" width="140" height="46" rx="6" />
+      <text x="200" y="34" text-anchor="middle" class="t1">FastAPI 백엔드</text>
+      <text x="200" y="50" text-anchor="middle" class="t2">저장 후 즉시 응답</text>
+    </g>
+    <g class="arch__box arch__box--mine">
+      <rect x="350" y="15" width="140" height="46" rx="6" />
+      <text x="420" y="34" text-anchor="middle" class="t1">RabbitMQ</text>
+      <text x="420" y="50" text-anchor="middle" class="t2">emotion, insight, reco 큐</text>
+    </g>
+    <g class="arch__box">
+      <rect x="550" y="15" width="90" height="46" rx="6" />
+      <text x="595" y="34" text-anchor="middle" class="t1">AI 워커</text>
+      <text x="595" y="50" text-anchor="middle" class="t2">분석과 추천</text>
+    </g>
+    <g class="arch__box arch__box--mine">
+      <rect x="130" y="115" width="140" height="46" rx="6" />
+      <text x="200" y="134" text-anchor="middle" class="t1">MySQL</text>
+      <text x="200" y="150" text-anchor="middle" class="t2">메모, 감정, 인사이트</text>
+    </g>
+    <g class="arch__box arch__box--mine">
+      <rect x="350" y="115" width="140" height="46" rx="6" />
+      <text x="420" y="134" text-anchor="middle" class="t1">Redis</text>
+      <text x="420" y="150" text-anchor="middle" class="t2">추천 결과 5분 캐시</text>
+    </g>
+  </svg>
 
   <p class="label">문제와 해결</p>
   <div class="problem">
@@ -414,6 +454,10 @@
     <h3 class="problem__title">서로 얽힌 AI 작업</h3>
     <p class="problem__text">감정 분석, 주간 인사이트, 장소 추천을 각각 별도 큐로 나눴다. 메시지 영속화, TTL, 수동 ACK를 적용하고, 추천 결과는 Redis에 5분간 캐시해 correlation ID로 추적했다.</p>
     <p class="problem__link">구현 코드: <a href="https://github.com/2025-OSS-Project/GeoMemo-Backend/blob/dev/core/mq.py">github.com/2025-OSS-Project/GeoMemo-Backend/blob/dev/core/mq.py</a></p>
+  </div>
+  <div class="problem">
+    <h3 class="problem__title">저장과 발행 사이에서 실패하면</h3>
+    <p class="problem__text">메모 저장과 감정 분석 요청을 서로 다른 API로 나눠, 큐 발행이 실패해도 메모는 남고 분석 요청만 오류로 돌아가 다시 보낼 수 있다. 큐는 durable로, 메시지는 영속 전송으로 선언해 브로커가 재시작돼도 남게 했다. 다만 주간 인사이트는 PENDING 레코드를 먼저 커밋한 뒤 발행해서, 발행이 실패하면 PENDING으로 남고 자동 재시도가 없다. 아웃박스 테이블이나 상태 기반 재발행이 다음 개선 과제다.</p>
   </div>
 
 

@@ -40,7 +40,7 @@ const FEATURED = [
     subtitle: '위치 기반 감정 기록과 맞춤 장소 추천 플랫폼',
     meta: ['팀 프로젝트, 2025 OSS', '백엔드, AI 파이프라인, 인프라'],
     flow: [
-      { label: '기록 API', note: '저장 후 즉시 응답', main: true },
+      { label: '백엔드 API', note: 'MySQL 저장 후 즉시 응답', main: true },
       { label: 'RabbitMQ', note: '영속화, TTL, 수동 ACK' },
       { parallel: [{ label: 'emotion.req' }, { label: 'insight.req' }, { label: 'reco.req/res' }] },
       { label: 'AI 워커', note: '분석과 추천' },
@@ -58,6 +58,10 @@ const FEATURED = [
         links: [
           { label: '구현 코드', href: 'https://github.com/2025-OSS-Project/GeoMemo-Backend/blob/dev/core/mq.py' },
         ],
+      },
+      {
+        title: '저장과 발행 사이에서 실패하면',
+        text: '메모 저장과 감정 분석 요청을 서로 다른 API로 나눠, 큐 발행이 실패해도 메모는 남고 분석 요청만 오류로 돌아가 다시 보낼 수 있다. 큐는 durable로, 메시지는 영속 전송으로 선언해 브로커가 재시작돼도 남게 했다. 다만 주간 인사이트는 PENDING 레코드를 먼저 커밋한 뒤 발행해서, 발행이 실패하면 PENDING으로 남고 자동 재시도가 없다. 아웃박스 테이블이나 상태 기반 재발행이 다음 개선 과제다.',
       },
     ],
     metrics: [],
