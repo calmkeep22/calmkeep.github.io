@@ -23,14 +23,14 @@ const FEATURED = [
       },
       {
         title: '분석 결과를 관제 화면에 바로 알리기',
-        text: 'AI 워커가 이상행동 이벤트를 백엔드 내부 API로 보내면, 백엔드가 영상과 썸네일을 S3에, 이벤트를 MySQL에 저장한다. 그 뒤 카메라별 asyncio.Queue 구독자에게 SSE로 이벤트를 전달해, 관제 화면이 새로고침 없이 알림을 받도록 했다.',
+        text: 'AI 워커가 이상행동 이벤트를 백엔드 내부 API로 보내면, 백엔드가 영상과 썸네일을 S3에, 이벤트를 MySQL에 저장한다. 그 뒤 카메라별 asyncio.Queue 구독자에게 SSE로 이벤트를 전달해, 관제 화면이 새로고침 없이 알림을 받도록 했다. 구독 목록을 카메라 ID별로 나눠, 한 카메라의 이벤트는 그 카메라를 보는 화면에만 간다.',
       },
     ],
     metrics: [
-      { value: '118개', label: '팀 저장소 본인 커밋, 2026년 4월~7월' },
-      { value: '2대', label: 'EC2 분리 배포, 백엔드와 미디어 서버' },
+      { value: '9개', label: '카메라 관리와 스트림 제어 API' },
+      { value: '카메라별', label: '스트림 세션과 SSE 알림 구독 분리' },
     ],
-    metricsNote: '커밋 수는 CSID-DGU/2026-1-CECD2-1-Deepgu-06 저장소의 작성자 기준이다.',
+    metricsNote: 'API 수는 저장소 README의 API 목록 기준이며, 헬스 체크 엔드포인트는 뺐다.',
     github: 'https://github.com/calmkeep22/2026-1-CECD2-1-Deepgu-06',
     tech: ['Python', 'FastAPI', 'MediaMTX', 'WebRTC', 'SSE', 'AWS EC2'],
   },
@@ -60,11 +60,7 @@ const FEATURED = [
         ],
       },
     ],
-    metrics: [
-      { value: '57개', label: '본인 커밋, 팀 저장소 최다' },
-      { value: '4개', label: 'emotion, insight, reco 요청과 응답 큐' },
-    ],
-    metricsNote: '커밋 수는 2025-OSS-Project/GeoMemo-Backend 저장소의 작성자 기준이다.',
+    metrics: [],
     github: 'https://github.com/2025-OSS-Project/GeoMemo-Backend',
     tech: ['FastAPI', 'RabbitMQ', 'Redis', 'MySQL', 'AWS'],
   },
@@ -86,8 +82,12 @@ const FEATURED = [
         text: 'AST 기반 함수 단위 청킹을 적용하고 처음 비교했을 때는 MRR이 0.886에서 0.833으로 떨어진 것처럼 보였다. 기준값은 코드베이스가 훨씬 작을 때 잰 수치였고, search_k=5에서는 한 파일의 조각들이 후보를 나눠 차지했다. 같은 코드베이스와 search_k=20으로 다시 재니 AST 청킹이 모든 지표에서 같거나 더 좋았다.',
       },
       {
-        title: '식별자 질문과 reranker',
-        text: 'Dense 검색이 놓친 에러 코드 질문을 잡으려고 BM25를 더해 RRF로 합쳤다. 해당 질문을 1위로 찾았고 Recall@5는 0.971을 유지했지만, MRR은 0.856에서 0.823으로 내려갔다. 이를 회복하려고 붙인 FlashRank reranker는 MRR을 0.29~0.41로 떨어뜨려 기본 경로에서 뺐다.',
+        title: 'MRR이 내려가도 하이브리드를 택한 이유',
+        text: 'Dense 검색은 에러 코드나 함수명이 핵심인 질문을 아예 놓쳤다. BM25를 더해 RRF로 합치자 그 질문을 1위로 찾았고 Recall@5는 0.971로 같았지만, MRR은 0.856에서 0.823으로 내려갔다. 코드 리뷰에서는 정확한 식별자를 못 찾는 실패가 순위가 조금 밀리는 것보다 치명적이라고 보고 하이브리드를 택했다. rrf_k를 30에서 300까지 바꿔도 MRR은 회복되지 않았다.',
+      },
+      {
+        title: '품질을 떨어뜨린 reranker',
+        text: '내려간 순위를 되돌리려고 FlashRank reranker를 붙였지만, 한국어 질문과 영어 코드가 섞인 평가셋에서 프롬프트 템플릿 코드가 거의 모든 질문의 상위를 차지해 MRR이 0.29~0.41로 떨어졌다. reranker는 기본 경로에서 빼고 선택 옵션으로만 남겼다.',
         links: [
           { label: '평가 기록', href: 'https://github.com/calmkeep22/langchain/blob/master/eval/results.md' },
         ],
@@ -98,7 +98,7 @@ const FEATURED = [
       { value: '0.823', label: 'MRR, Dense만 쓰면 0.856' },
       { value: '0.29~0.41', label: 'reranker 적용 시 MRR, 채택 안 함' },
     ],
-    metricsNote: '측정 조건: 저장소 app/ 폴더 대상 질문 35개, 파일 단위 정답, search_k=20, eval/run_eval.py 기준.',
+    metricsNote: '측정 조건: 저장소 app/ 폴더 대상 질문 35개, 파일 단위 정답, search_k=20, eval/run_eval.py 기준. 질문이 35개뿐이라 질문 하나가 Hit@1을 약 0.03씩 움직인다.',
     github: 'https://github.com/calmkeep22/langchain',
     tech: ['FastAPI', 'LangChain', 'Chroma', 'SQLite FTS5', 'BM25', 'Mistral'],
   },
@@ -110,7 +110,7 @@ const ADDITIONAL = [
     title: 'OpenStock Access',
     subtitle: '시각장애인과 저시력 사용자를 위한 접근성 주식 모의투자 앱',
     meta: ['오픈소스 팀 프로젝트, 2026 OSS', '접근성, 아키텍처, AI 연동'],
-    summary: '3인 팀에서 커밋의 약 90%를 맡았다. 문장마다 0.97초씩 걸리던 TTS 기동을 상주 프로세스로 바꿔 한 번으로 줄였고, CSS 전체의 대비를 자동 계산해 고대비 모드에서 깨지던 규칙 117개를 찾아 고쳤다.',
+    summary: '3인 팀에서 멀티모듈 구조, 접근성 UI, 음성 명령, AI 서비스 연동을 맡았다. 문장마다 0.97초씩 걸리던 TTS 기동을 상주 프로세스로 바꿔 한 번으로 줄였고, CSS 전체의 대비를 자동 계산해 고대비 모드에서 깨지던 규칙 117개를 찾아 고쳤다.',
     github: 'https://github.com/calmkeep22/2026-OSS-PROJECT',
     tech: ['Java 17', 'JavaFX', 'Python', 'Whisper', 'SQLite'],
   },
@@ -220,14 +220,16 @@ function ProjectCase({ project }) {
         ))}
       </div>
 
-      <dl className="metrics" style={{ '--cols': project.metrics.length }}>
-        {project.metrics.map((m) => (
-          <div className="metric" key={m.label}>
-            <dt className="metric__label">{m.label}</dt>
-            <dd className="metric__value">{m.value}</dd>
-          </div>
-        ))}
-      </dl>
+      {project.metrics.length > 0 && (
+        <dl className="metrics" style={{ '--cols': project.metrics.length }}>
+          {project.metrics.map((m) => (
+            <div className="metric" key={m.label}>
+              <dt className="metric__label">{m.label}</dt>
+              <dd className="metric__value">{m.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
 
       {project.metricsNote && <p className="metrics-note">{project.metricsNote}</p>}
 

@@ -797,6 +797,9 @@ main:focus { outline: none; }
   margin-bottom: 40px;
 }
 
+/* an odd last problem takes the full row instead of leaving a gap */
+.problems > .problem:last-child:nth-child(odd) { grid-column: 1 / -1; }
+
 .problem {
   padding-top: 20px;
   border-top: 1px solid var(--line-strong);
