@@ -67,7 +67,7 @@ export default function Hero() {
               height="480"
               alt="장효석 프로필 사진"
               decoding="async"
-              fetchPriority="high"
+              fetchpriority="high"
             />
             <div>
               <p className="profile__name">장효석</p>

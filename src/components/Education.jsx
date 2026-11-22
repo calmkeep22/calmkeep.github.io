@@ -28,6 +28,10 @@ export default function Education() {
                 <dd>2021년</dd>
               </div>
               <div>
+                <dt>졸업</dt>
+                <dd>2027년 2월 예정</dd>
+              </div>
+              <div>
                 <dt>학점</dt>
                 <dd><strong>4.03</strong> / 4.5</dd>
               </div>

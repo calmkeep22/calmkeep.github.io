@@ -25,7 +25,14 @@ else
   out_arg="$out"
 fi
 
-"$chrome" --headless=new --disable-gpu --no-pdf-header-footer \
+# A throwaway profile keeps headless Chrome from attaching to an already open Chrome window.
+profile="$(mktemp -d)"
+trap 'rm -rf "$profile"' EXIT
+profile_arg="$profile"
+command -v cygpath >/dev/null 2>&1 && profile_arg="$(cygpath -w "$profile")"
+
+"$chrome" --headless=new --disable-gpu --no-pdf-header-footer --no-first-run \
+  --user-data-dir="$profile_arg" \
   --virtual-time-budget=15000 \
   --print-to-pdf="$out_arg" "file:///$src" >/dev/null 2>&1
 

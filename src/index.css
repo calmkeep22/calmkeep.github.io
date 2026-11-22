@@ -873,6 +873,12 @@ main:focus { outline: none; }
   line-height: 1.45;
 }
 
+.metrics-note {
+  margin: -12px 0 24px;
+  font-size: 0.85rem;
+  color: var(--text-3);
+}
+
 .tech-list {
   display: flex;
   flex-wrap: wrap;

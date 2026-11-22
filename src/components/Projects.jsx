@@ -6,35 +6,33 @@ const FEATURED = [
     id: 'deepgu',
     title: 'DeepGU',
     subtitle: 'VLM 기반 실시간 CCTV 이상행동 분석 플랫폼',
-    meta: ['팀 프로젝트, 캡스톤 디자인', '백엔드, 인프라'],
+    meta: ['팀 프로젝트, 캡스톤 디자인', '백엔드, 미디어 서버, 실시간 알림'],
     flow: [
-      { label: 'CCTV 영상', note: 'OBS 송출' },
-      { label: 'MediaMTX, FastAPI', note: '영상 허브와 이벤트 서버' },
-      {
-        parallel: [
-          { label: 'WebRTC 송출', note: '영상 지연 약 125ms', main: true },
-          { label: 'SSE 알림', note: '50ms 이내 전달' },
-        ],
-      },
-      { label: '관제 화면', note: '영상과 알림 실시간 수신' },
+      { label: 'CCTV 영상', note: 'OBS에서 RTMP 송출' },
+      { label: '미디어 서버', note: 'MediaMTX, FastAPI, EC2' },
+      { label: 'AI 워커', note: '이상행동 판정, AI 팀원 담당' },
+      { label: '백엔드', note: '이벤트 저장, MySQL, S3' },
+      { label: 'SSE 알림', note: '카메라별 구독', main: true },
+      { label: '관제 화면', note: 'WebRTC 영상과 알림' },
     ],
-    desc: 'OBS 영상 송출부터 실시간 알림까지 스트리밍과 백엔드 인프라를 설계하고 구축했다. VLM 이상행동 분석은 AI 팀원이 맡았고, 나는 영상과 이벤트가 지연 없이 흐르는 구조를 담당했다.',
+    desc: 'CCTV 영상을 실시간으로 받아 AI가 이상행동을 판정하고 관제 화면에 알리는 플랫폼이다. 백엔드, 미디어 서버, 실시간 알림을 맡았고, 이상행동을 판정하는 AI 파이프라인은 AI 팀원이 담당했다.',
     problems: [
       {
-        title: '수 초씩 늦는 영상',
-        text: 'HLS 기반 스트리밍은 수 초 이상 지연돼 이상행동에 바로 대응하기 어려웠다. MediaMTX를 스트리밍 허브로 두고 WebRTC 저지연 송출로 바꿔 영상 지연을 약 125ms로 낮췄다.',
+        title: '수 초씩 늦는 HLS 영상',
+        text: 'HLS는 세그먼트 단위로 재생돼 수 초 이상 늦게 보였다. MediaMTX가 RTMP 입력을 받고, 관제 화면이 WHEP으로 WebRTC 스트림을 바로 재생하도록 바꿨다. WebRTC 주소가 없는 환경에서는 기존 HLS 플레이어로 재생한다.',
       },
       {
-        title: '실시간 이상행동 알림',
-        text: '분석 결과로 나온 이상행동 이벤트를 관제 화면에 바로 보여 줘야 했다. asyncio.Queue 기반 SSE broadcaster를 만들어 연결된 클라이언트에 이벤트를 실시간으로 전달했고, 알림 지연을 50ms 이내로 유지했다.',
+        title: '분석 결과를 관제 화면에 바로 알리기',
+        text: 'AI 워커가 이상행동 이벤트를 백엔드 내부 API로 보내면, 백엔드가 영상과 썸네일을 S3에, 이벤트를 MySQL에 저장한다. 그 뒤 카메라별 asyncio.Queue 구독자에게 SSE로 이벤트를 전달해, 관제 화면이 새로고침 없이 알림을 받도록 했다.',
       },
     ],
     metrics: [
-      { value: '~125ms', label: '영상 지연, 기존 HLS는 수 초' },
-      { value: '≤ 50ms', label: '이벤트 알림 지연, SSE' },
+      { value: '118개', label: '팀 저장소 본인 커밋, 2026년 4월~7월' },
+      { value: '2대', label: 'EC2 분리 배포, 백엔드와 미디어 서버' },
     ],
+    metricsNote: '커밋 수는 CSID-DGU/2026-1-CECD2-1-Deepgu-06 저장소의 작성자 기준이다.',
     github: 'https://github.com/calmkeep22/2026-1-CECD2-1-Deepgu-06',
-    tech: ['Python', 'FastAPI', 'MediaMTX', 'WebRTC', 'SSE', 'asyncio'],
+    tech: ['Python', 'FastAPI', 'MediaMTX', 'WebRTC', 'SSE', 'AWS EC2'],
   },
   {
     id: 'geomemo',
@@ -52,7 +50,7 @@ const FEATURED = [
     problems: [
       {
         title: '분석을 기다리던 기록 API',
-        text: '약 3초가 걸리는 LLM 감정 분석이 기록 API를 막고 있었다. 기록 저장과 분석을 분리하고 분석 요청은 RabbitMQ로 넘겨, 메모를 저장하는 즉시 응답하도록 바꿨다.',
+        text: '기록 API가 LLM 감정 분석이 끝날 때까지 응답을 기다리고 있었다. 기록 저장과 분석을 분리하고 분석 요청은 RabbitMQ로 넘겨, 메모를 저장하는 즉시 응답하도록 바꿨다.',
       },
       {
         title: '서로 얽힌 AI 작업',
@@ -63,11 +61,11 @@ const FEATURED = [
       },
     ],
     metrics: [
-      { value: '150ms', label: '기록 API 응답시간, 기존 3,030ms' },
-      { value: '약 95%', label: '응답시간 감소' },
-      { value: '3종', label: '분리한 AI 워크플로' },
+      { value: '57개', label: '본인 커밋, 팀 저장소 최다' },
+      { value: '4개', label: 'emotion, insight, reco 요청과 응답 큐' },
     ],
-    github: 'https://github.com/2025-OSS-Project',
+    metricsNote: '커밋 수는 2025-OSS-Project/GeoMemo-Backend 저장소의 작성자 기준이다.',
+    github: 'https://github.com/2025-OSS-Project/GeoMemo-Backend',
     tech: ['FastAPI', 'RabbitMQ', 'Redis', 'MySQL', 'AWS'],
   },
   {
@@ -78,28 +76,29 @@ const FEATURED = [
     flow: [
       { label: '리뷰 질문' },
       { parallel: [{ label: 'Dense 검색', note: '의미 검색' }, { label: 'BM25 검색', note: 'SQLite FTS5' }] },
-      { label: 'RRF 병합', note: '파일당 후보 제한', main: true },
+      { label: 'RRF 병합', note: '파일당 후보 2개 제한', main: true },
       { label: '근거 기반 리뷰', note: '코드 위치와 문서 출처' },
     ],
-    desc: '프로젝트 코드와 프레임워크 공식문서를 함께 검색해 리뷰하고, 답변마다 코드 위치와 문서 출처를 붙여 결과를 직접 검증할 수 있게 했다.',
+    desc: '프로젝트 코드와 프레임워크 공식문서를 함께 검색해 리뷰하고, 답변마다 코드 위치와 문서 출처를 붙인다. 검색 구조를 바꿀 때마다 같은 평가셋으로 다시 재고, 결과를 저장소의 평가 기록에 남겼다.',
     problems: [
       {
-        title: '의미 검색이 놓치는 코드 식별자',
-        text: 'Dense 검색만으로는 함수명이나 클래스명처럼 정확한 문자열이 중요한 질문을 놓쳤다. 코드를 AST 기반 함수 단위로 나누고 Dense와 BM25 검색 결과를 RRF로 합쳤으며, 파일당 후보 수를 제한해 한 파일이 결과를 독점하지 않게 했다.',
+        title: '공정하지 않았던 첫 비교',
+        text: 'AST 기반 함수 단위 청킹을 적용하고 처음 비교했을 때는 MRR이 0.886에서 0.833으로 떨어진 것처럼 보였다. 기준값은 코드베이스가 훨씬 작을 때 잰 수치였고, search_k=5에서는 한 파일의 조각들이 후보를 나눠 차지했다. 같은 코드베이스와 search_k=20으로 다시 재니 AST 청킹이 모든 지표에서 같거나 더 좋았다.',
       },
       {
-        title: '품질을 떨어뜨린 reranker',
-        text: 'FlashRank reranker를 붙이자 한국어 질문 35개 평가셋에서 MRR이 0.82에서 0.29~0.41로 떨어졌다. 측정 결과를 근거로 reranker를 기본 경로에서 빼고 하이브리드 검색을 최종 구조로 택했다.',
+        title: '식별자 질문과 reranker',
+        text: 'Dense 검색이 놓친 에러 코드 질문을 잡으려고 BM25를 더해 RRF로 합쳤다. 해당 질문을 1위로 찾았고 Recall@5는 0.971을 유지했지만, MRR은 0.856에서 0.823으로 내려갔다. 이를 회복하려고 붙인 FlashRank reranker는 MRR을 0.29~0.41로 떨어뜨려 기본 경로에서 뺐다.',
         links: [
-          { label: '평가 결과', href: 'https://github.com/calmkeep22/langchain/tree/master/eval' },
+          { label: '평가 기록', href: 'https://github.com/calmkeep22/langchain/blob/master/eval/results.md' },
         ],
       },
     ],
     metrics: [
-      { value: '0.82', label: 'Hybrid 검색 MRR' },
-      { value: '35개', label: '평가 질문' },
-      { value: '0.29~0.41', label: 'Reranker 적용 후 MRR' },
+      { value: '0.971', label: 'Recall@5, 하이브리드 검색' },
+      { value: '0.823', label: 'MRR, Dense만 쓰면 0.856' },
+      { value: '0.29~0.41', label: 'reranker 적용 시 MRR, 채택 안 함' },
     ],
+    metricsNote: '측정 조건: 저장소 app/ 폴더 대상 질문 35개, 파일 단위 정답, search_k=20, eval/run_eval.py 기준.',
     github: 'https://github.com/calmkeep22/langchain',
     tech: ['FastAPI', 'LangChain', 'Chroma', 'SQLite FTS5', 'BM25', 'Mistral'],
   },
@@ -229,6 +228,8 @@ function ProjectCase({ project }) {
           </div>
         ))}
       </dl>
+
+      {project.metricsNote && <p className="metrics-note">{project.metricsNote}</p>}
 
       <TechList items={project.tech} title={project.title} />
     </article>

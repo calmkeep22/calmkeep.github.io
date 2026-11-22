@@ -1,10 +1,10 @@
 const CATEGORIES = [
   { name: 'Backend', items: ['Python', 'Java', 'FastAPI', 'Spring Boot'] },
-  { name: 'Data', items: ['MySQL', 'PostgreSQL', 'Redis', 'RabbitMQ'] },
+  { name: 'Data', items: ['MySQL', 'Redis', 'RabbitMQ'] },
   { name: 'AI', items: ['RAG', 'LangChain', 'Chroma', 'Whisper'] },
   { name: 'Streaming', items: ['WebRTC', 'SSE', 'MediaMTX'] },
   { name: 'Infra', items: ['AWS', 'Docker', 'GitHub Actions'] },
-  { name: 'Testing', items: ['pytest', 'JUnit', 'Testcontainers'] },
+  { name: 'Testing', items: ['pytest'] },
 ]
 
 export default function TechStack() {
